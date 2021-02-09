@@ -6,9 +6,19 @@ public class playerController : MonoBehaviour
 {
     private Transform playerTransform;
     private Rigidbody2D player;
-    private CapsuleCollider2D playerCollider;
+    public CapsuleCollider2D playerCollider;
+    private PlayerGroundedCheck playerGroundedCheck;
+    public int playerHealth = 5;
+    public int playerFacing =1;
+    public bool isInvulnerable;
+    public float invulnerableUntil;
     public float jumpForce;
+    public bool isHit = false;
+    private float speed = 5f;
+
+    private playerAttack playerAttack;
     public bool nearStairs = false;
+    public bool onStairs = false;
     public GameObject nearbyStairs;
     public Transform nearbyStairsTransform;
     public StairsInfo stairsInfo;
@@ -17,92 +27,105 @@ public class playerController : MonoBehaviour
     public int stairsFacing;
     public int stairsSlope;
     public float maxVelocity;
-    private float speed = 5f;
-    public float nextStepTime;
     public float stepRate = 4f;
-    public bool onStairs = false;
-    public bool isGrounded;
+
+
 
     // Start is called before the first frame update
     void Start()
     {
+        playerGroundedCheck = GetComponentInChildren<PlayerGroundedCheck>();
         playerTransform = GetComponent<Transform>();
         player = GetComponent<Rigidbody2D>();
         playerCollider = GetComponent<CapsuleCollider2D>();
+        playerAttack = GetComponent<playerAttack>();
     }
     void FixedUpdate()
     {
-        if (isGrounded == true && onStairs == false)
+        if (Time.time >= invulnerableUntil)
         {
-            player.gravityScale = 1f;
+            isInvulnerable = false;
+        }
 
-            if (player.velocity.x > 0)
+        if (Time.time >= playerAttack.nextMoveTime)
+        {
+            isHit = false;
+        }
+
+            if (playerGroundedCheck.isGrounded == true && onStairs == false && isHit == false)
             {
-                transform.localScale = new Vector3(1, 1, 1);
-            }
-            else if (player.velocity.x < 0)
-            {
-                transform.localScale = new Vector3(-1, 1, 1);
-            }
-            {
-                if (Input.GetAxisRaw("Horizontal") == 0)
+                player.gravityScale = 1f;
+
+                if (player.velocity.x > 0)
                 {
-                    player.velocity = Vector2.zero;
+                    transform.localScale = new Vector3(1, 1, 1);
+                    playerFacing = 1;
                 }
-
-                else
+                else if (player.velocity.x < 0)
                 {
-                    float moveHorizontal = Input.GetAxisRaw("Horizontal");
-
-                    Vector2 movement = new Vector2(moveHorizontal, 0);
-
-                    player.velocity = movement * speed;
-                    player.velocity = Vector2.ClampMagnitude(player.velocity, 5);
+                    transform.localScale = new Vector3(-1, 1, 1);
+                    playerFacing = -1;
                 }
-                if (Input.GetAxisRaw("Vertical") < 0)
                 {
-                    if (nearStairs == false || (nearStairs == true && (stairsFacing == stairsSlope)))
+                    if (Input.GetAxisRaw("Horizontal") == 0)
                     {
                         player.velocity = Vector2.zero;
-                        playerCollider.offset = new Vector2(0, -0.5f);
-                        playerCollider.size = new Vector2(1, 1);
                     }
-                }
 
-                else
-                {
-                    playerCollider.offset = new Vector2(0, 0);
-                    playerCollider.size = new Vector2(1, 2);
-                }
-                if (Input.GetAxisRaw("Vertical") > 0)
-                {
-                    if (nearStairs == false || (nearStairs == true && (stairsFacing != stairsSlope)))
-                    {
-                        player.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
-                    }
-                }
 
-                if (player.velocity.y == 0 && nearStairs == true)
-                {
-                    if (stairsFacing == 1 && stairsSlope == 1)
+                    else if (Time.time >= playerAttack.nextMoveTime)
                     {
-                        ApproachingStairsEntranceFromLeftPositiveSlope();
+                        float moveHorizontal = Input.GetAxisRaw("Horizontal");
+
+                        Vector2 movement = new Vector2(moveHorizontal, 0);
+
+                        player.velocity = movement * speed;
+                        player.velocity = Vector2.ClampMagnitude(player.velocity, 5);
                     }
-                    else if (stairsFacing == 1 && stairsSlope == -1)
+                    if (Input.GetAxisRaw("Vertical") < 0)
                     {
-                        ApproachingStairsEntranceFromLeftNegativeSlope();
+                        if (nearStairs == false || (nearStairs == true && (stairsFacing == stairsSlope)))
+                        {
+                            player.velocity = Vector2.zero;
+                            playerCollider.offset = new Vector2(0, -0.5f);
+                            playerCollider.size = new Vector2(1, 1);
+                        }
                     }
-                    else if (stairsFacing == -1 && stairsSlope == -1)
+
+                    else
                     {
-                        ApproachingStairsEntranceFromRightNegativeSlope();
+                        playerCollider.offset = new Vector2(0, 0);
+                        playerCollider.size = new Vector2(1, 2);
                     }
-                    else if (stairsFacing == -1 && stairsSlope == 1)
+                    if (Input.GetAxisRaw("Vertical") > 0)
                     {
-                        ApproachingStairsEntranceFromRightPositiveSlope();
+                        if (nearStairs == false || (nearStairs == true && (stairsFacing != stairsSlope)))
+                        {
+                            player.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+                        }
                     }
-                }
+
+                    if (player.velocity.y == 0 && nearStairs == true)
+                    {
+                        if (stairsFacing == 1 && stairsSlope == 1)
+                        {
+                            ApproachingStairsEntranceFromLeftPositiveSlope();
+                        }
+                        else if (stairsFacing == 1 && stairsSlope == -1)
+                        {
+                            ApproachingStairsEntranceFromLeftNegativeSlope();
+                        }
+                        else if (stairsFacing == -1 && stairsSlope == -1)
+                        {
+                            ApproachingStairsEntranceFromRightNegativeSlope();
+                        }
+                        else if (stairsFacing == -1 && stairsSlope == 1)
+                        {
+                            ApproachingStairsEntranceFromRightPositiveSlope();
+                        }
+                    }
+                }           
             }
-        }
 
         if (onStairs == true)
         {
@@ -220,6 +243,7 @@ public class playerController : MonoBehaviour
         if (onStairs == true)
         {
             player.gravityScale = 0f;
+            playerCollider.isTrigger = true;
             if (Input.GetAxisRaw("Vertical") > 0 || Input.GetAxisRaw("Horizontal") > 0)
             {
                 transform.localScale = new Vector3(1, 1, 1);
@@ -237,6 +261,7 @@ public class playerController : MonoBehaviour
         if (onStairs == true)
         {
             player.gravityScale = 0f;
+            playerCollider.isTrigger = true;
             if (Input.GetAxisRaw("Vertical") > 0 || Input.GetAxisRaw("Horizontal") < 0)
             {
                 transform.localScale = new Vector3(-1, 1, 1);
@@ -247,6 +272,28 @@ public class playerController : MonoBehaviour
                 transform.localScale = new Vector3(1, 1, 1);
                 player.position = Vector2.MoveTowards(player.position, stairsStartPoint, stepRate * Time.deltaTime);
             }
+        }
+    }
+
+    void TakeDamage()
+    {
+        if (playerHealth > 0)
+        {
+            isHit = true;
+            playerAttack.nextMoveTime = Time.time + 0.75f;
+            isInvulnerable = true;
+            playerHealth -= 1;
+            invulnerableUntil = 3f + Time.time;
+            
+            if (onStairs == false)
+            {
+                player.AddForce(new Vector2(playerFacing * -4f, 4f), ForceMode2D.Impulse);
+            }
+        }
+
+        if (playerHealth <= 0)
+        {
+            //die
         }
     }
 
@@ -261,28 +308,21 @@ public class playerController : MonoBehaviour
             stairsFacing = stairsInfo.facing;
             stairsSlope = stairsInfo.slope;
         }
+        if (collision.gameObject.CompareTag("Enemy") && isInvulnerable == false && isHit == false)
+        {
+            TakeDamage();
+            //knockback + take damage + invincibility
+            //die if necessary
+        }
     }
     void OnTriggerExit2D(Collider2D collision)
     {
-        nearStairs = !nearStairs;
-        nearbyStairs = null;
-        stairsInfo = null;
-        nearbyStairsTransform = null;
-    }
-    public void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
+        if (collision.gameObject.CompareTag("Stairs"))
         {
-            player.gravityScale = 1;
-            isGrounded = true;
-            onStairs = false;
-        }
-    }
-    void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = false;
+            nearStairs = false;
+            nearbyStairs = null;
+            stairsInfo = null;
+            nearbyStairsTransform = null;
         }
     }
 }

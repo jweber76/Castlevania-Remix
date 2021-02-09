@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 873278141889758137}
   m_Layer: 0
   m_Name: Cross
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -135,4 +135,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackPoint: {fileID: 4054902467800088650, guid: fc0fc025522dafa4784f32fc75dbfbde, type: 3}
+  player: {fileID: 0}
+  secret: {fileID: 0}
+  playerRigidbody: {fileID: 0}
+  playerAttack: {fileID: 0}
+  facing: 0
+  throwDirection: 0
+  range: 10
   speed: 10
+  attackDamage: 0
