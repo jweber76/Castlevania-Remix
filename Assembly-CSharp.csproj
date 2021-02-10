@@ -35,38 +35,6 @@
     <ImplicitlyExpandNETStandardFacades>false</ImplicitlyExpandNETStandardFacades>
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
-<<<<<<< Updated upstream
-=======
-  <PropertyGroup>
-    <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <UnityProjectGenerator>Package</UnityProjectGenerator>
-    <UnityProjectGeneratorVersion>2.0.5</UnityProjectGeneratorVersion>
-    <UnityProjectType>Game:1</UnityProjectType>
-    <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
-    <UnityVersion>2020.2.1f1</UnityVersion>
-  </PropertyGroup>
-  <ItemGroup>
-    <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Assets\Scripts\Axe.cs" />
-    <Compile Include="Assets\Scripts\heart.cs" />
-    <Compile Include="Assets\Scripts\TestController.cs" />
-    <Compile Include="Assets\Scripts\playerController.cs" />
-    <Compile Include="Assets\Scripts\playerAttack.cs" />
-    <Compile Include="Assets\Scripts\FlyingEnemyController.cs" />
-    <Compile Include="Assets\Scripts\Secret.cs" />
-    <Compile Include="Assets\Scripts\groundEnemyController.cs" />
-    <Compile Include="Assets\Scripts\StairsInfo.cs" />
-    <Compile Include="Assets\Scripts\HolyWater.cs" />
-    <Compile Include="Assets\Scripts\CameraFollow.cs" />
-    <Compile Include="Assets\Scripts\Cross.cs" />
-    <Compile Include="Assets\Scripts\Dagger.cs" />
-    <Compile Include="Assets\Scripts\PlayerGroundedCheck.cs" />
-    <Compile Include="Assets\Scripts\GameController.cs" />
-    <Compile Include="Assets\Scripts\PlayerHealthBar.cs" />
-  </ItemGroup>
->>>>>>> Stashed changes
   <ItemGroup>
      <Compile Include="Assets\Scripts\Axe.cs" />
      <Compile Include="Assets\Scripts\heart.cs" />
