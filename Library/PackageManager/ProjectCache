@@ -5,7 +5,7 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 637485203029798642
+      ticks: 637485290959451377
     m_Hash: 1710323442
   m_LockFileStatus:
     m_FilePath: C:/Users/cmper/OneDrive/Documents/Unity/Castlevania-Remix/Packages/packages-lock.json
@@ -13,7 +13,7 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 637485231221066692
+      ticks: 637485302771680821
     m_Hash: 1336112326
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}

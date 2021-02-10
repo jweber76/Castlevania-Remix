@@ -10,6 +10,7 @@ public class CameraFollow : MonoBehaviour
 
     private void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
         threshold = CalculateThreshold();
         playerRB = player.GetComponent<Rigidbody2D>();
     }
