@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class playerController : MonoBehaviour
 {
@@ -8,7 +9,10 @@ public class playerController : MonoBehaviour
     private Rigidbody2D player;
     public CapsuleCollider2D playerCollider;
     private PlayerGroundedCheck playerGroundedCheck;
-    public int playerHealth = 5;
+    private playerAttack playerAttack;
+    public Canvas UI;
+    public int playerHealth = 16;
+    public PlayerHealthBar healthBar;
     public int playerFacing =1;
     public bool isInvulnerable;
     public float invulnerableUntil;
@@ -16,7 +20,7 @@ public class playerController : MonoBehaviour
     public bool isHit = false;
     private float speed = 5f;
 
-    private playerAttack playerAttack;
+    
     public bool nearStairs = false;
     public bool onStairs = false;
     public GameObject nearbyStairs;
@@ -39,6 +43,8 @@ public class playerController : MonoBehaviour
         player = GetComponent<Rigidbody2D>();
         playerCollider = GetComponent<CapsuleCollider2D>();
         playerAttack = GetComponent<playerAttack>();
+        UI = FindObjectOfType<Canvas>();
+        healthBar = UI.GetComponentInChildren<PlayerHealthBar>();
     }
     void FixedUpdate()
     {
@@ -282,8 +288,8 @@ public class playerController : MonoBehaviour
             isHit = true;
             playerAttack.nextMoveTime = Time.time + 0.75f;
             isInvulnerable = true;
-            playerHealth -= 1;
-            invulnerableUntil = 3f + Time.time;
+            playerHealth -= 4;
+            invulnerableUntil = 2.75f + Time.time;
             
             if (onStairs == false)
             {

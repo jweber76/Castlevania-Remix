@@ -9,21 +9,37 @@ public class GameController : MonoBehaviour
     private playerController playerController;
 
     public float timeRemaining = 90f;
+    public bool gameActive;
     public Text timeRemainingText;
     public Text heartsText;
     public Text stageText;
-    public Sprite subWeaponSprite;
-    public Sprite shotSprite;
+    public Image subWeaponSprite;
+    public Image shotSprite;
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         playerController = player.GetComponent<playerController>();
+        StartCoroutine(Timer());
     }
 
-    // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
         
+    }
+
+    IEnumerator Timer()
+    {
+        while (timeRemaining >= 0)
+        {
+            //timeRemainingText.text = timeRemaining.ToString();
+            yield return new WaitForSeconds(1f);
+            timeRemaining--;
+        }
+        gameActive = false;
     }
 }
