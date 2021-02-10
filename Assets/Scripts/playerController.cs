@@ -13,14 +13,15 @@ public class playerController : MonoBehaviour
     public Canvas UI;
     public int playerHealth = 16;
     public PlayerHealthBar healthBar;
-    public int playerFacing =1;
+    public int playerFacing = 1;
     public bool isInvulnerable;
     public float invulnerableUntil;
     public float jumpForce;
     public bool isHit = false;
+    public bool isDead = false;
     private float speed = 5f;
 
-    
+
     public bool nearStairs = false;
     public bool onStairs = false;
     public GameObject nearbyStairs;
@@ -48,17 +49,17 @@ public class playerController : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if (Time.time >= invulnerableUntil)
+        if (Time.time >= invulnerableUntil && isDead == false)
         {
             isInvulnerable = false;
         }
 
-        if (Time.time >= playerAttack.nextMoveTime)
+        if (Time.time >= playerAttack.nextMoveTime && isDead == false)
         {
             isHit = false;
         }
 
-            if (playerGroundedCheck.isGrounded == true && onStairs == false && isHit == false)
+            if (playerGroundedCheck.isGrounded == true && onStairs == false && isHit == false && isDead == false)
             {
                 player.gravityScale = 1f;
 
@@ -299,10 +300,14 @@ public class playerController : MonoBehaviour
 
         if (playerHealth <= 0)
         {
-            //die
+            Die();
         }
     }
 
+    public void Die()
+    {
+        isDead = true;
+    }
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Stairs"))
